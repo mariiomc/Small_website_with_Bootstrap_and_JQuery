@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div class="container-fluid">
+    <h1>USER INFORMATION: </h1>
+    <div class="row">
+        <div class="col-sm-4" style="background-color:lavenderblush;"><h3>USERNAME: </h3></div>
+        <div class="col-sm-8" style="background-color:white;"><span id ="username"></span></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4" style="background-color:lavenderblush;"><h3>DESCRIPTION: </h3></div>
+        <div class="col-sm-8" style="background-color:white;"><span id ="userBio"></span></div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4" style="background-color:lavenderblush;"><h3>NUMBER OF FOLLOWERS: </h3></div>
+        <div class="col-sm-8" style="background-color:white;"><span id ="userFollowers"></span></div>
+    </div>
+</div>
+
+<div class ="container">
+    <form  action="index.html">
+            <div class="input-group-btn">
+                <button class="btn btn-primary" type="submit">BACK </button>
+        </div>
+    </form>
+</div>
+<script>
+    var githubUsername = localStorage.getItem('githubUsername');
+
+    if (githubUsername) {
+        document.getElementById('username').textContent = githubUsername;
+
+            fetch(`https://api.github.com/users/${githubUsername}`)
+                .then(response => response.json())
+                .then(userData => {
+                    if (userData.bio) {
+                        document.getElementById('userBio').textContent = userData.bio;
+                    } else {
+                        document.getElementById('userBio').textContent = 'This user has no description yet. Try it later :)';
+                    }
+                    document.getElementById('userFollowers').textContent = userData.followers;
+
+                })
+                .catch(error => console.error('Error al obtener la información del usuario:', error));
+
+    }
+
+</script>
+</body>
+</html>
